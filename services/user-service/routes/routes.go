@@ -2,16 +2,20 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func SetupRoutes(r *gin.Engine) {
+func SetupRoutes(r *gin.Engine, dbPool *pgxpool.Pool) {
 
 	// Public routes
-	public := r.Group("/users")
-	RegisterPublicRoutes(public)
+	userPublic := r.Group("/users")
+	RegisterUserPublicRoutes(userPublic)
 
 	// Protected routes
-	protected := r.Group("/users")
-	RegisterProtectedRoutes(protected)
+	userProtected := r.Group("/users")
+	RegisterUserProtectedRoutes(userProtected)
+
+	roleProtected := r.Group("/api/v1/roles")
+	RegisterRoleProtectedRoutes(roleProtected, dbPool)
 
 }
